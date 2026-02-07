@@ -1,0 +1,112 @@
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.Random;
+
+public class RabinMiller {
+    Random rand = new Random();
+    ArrayList<BigInteger> listOfPrimes = new ArrayList<>();
+
+    public ArrayList<BigInteger> generatePrimes(int bitLength, int count) {
+        long start = System.currentTimeMillis();
+        int generatedPrimes = 0;
+
+        while (generatedPrimes < count) {
+            BigInteger n;
+            BigInteger nStart;
+
+            do {
+                nStart = new BigInteger(bitLength, rand);
+            } while (nStart.compareTo(BigInteger.valueOf(4)) < 0); // random but must be more than 3
+
+            if (nStart.mod(BigInteger.TWO).equals(BigInteger.ZERO)) {
+                // System.out.println("nStart was even, add 1");
+                n = nStart.add(BigInteger.ONE);
+                // System.out.println("Our n is now odd: " + n);
+            } else {
+                n = nStart;
+                // System.out.println("nStart is odd, n = " + n);
+            }
+            // have now generated an odd number n, factorize next
+            // n-1=2^r⋅s (s should be odd)
+            BigInteger nMinusOne = n.subtract(BigInteger.ONE);
+            // System.out.println("n is now subtracted by 1 and equals: " + nMinusOne);
+
+            int r = 0; // this is what 2 will be raised to later
+
+            while (nMinusOne.mod(BigInteger.TWO).equals(BigInteger.ZERO)) {
+                nMinusOne = nMinusOne.divide(BigInteger.TWO);
+                r++;
+            }
+
+            BigInteger s = nMinusOne; // the odd S after facorizations
+
+            // System.out.println("r is: " + r + " and s is: " + s + " We now have: that n =
+            // 2 ^ to r * by s + 1 is: " +
+            // n + " = 2^" + r + " * " + s + " + 1 ");
+
+            boolean probablyPrime = true;
+            // now we will test if n is a prime number
+
+            for (int test = 1; test <= 20; test++) {
+                if (n.compareTo(BigInteger.valueOf(3)) <= 0) {
+                    System.out.println(n + " is prime (special case)");
+                    break;
+                }
+
+                BigInteger a;
+                do {
+                    a = new BigInteger(n.bitLength(), rand);
+                } while (a.compareTo(BigInteger.TWO) < 0 || a.compareTo(n.subtract(BigInteger.TWO)) > 0);
+
+                // System.out.println("\nRandom 'a' in test " + test + " between 2 and n - 2 is:
+                // " + a);
+                BigInteger x = a.modPow(s, n);
+                // System.out.println("our x is now: " + x);
+
+                if (x.equals(BigInteger.ONE) || x.equals(n.subtract(BigInteger.ONE))) {
+                    // System.out.println("n is ProbablyPrime with this a, n = " + n + " and a = " +
+                    // a);
+                    continue;
+                }
+
+                boolean witnessFound = false;
+
+                for (int j = 1; j < r; j++) {
+                    BigInteger twoPowJ = BigInteger.TWO.pow(j);
+                    BigInteger exponent = twoPowJ.multiply(s);
+                    x = a.modPow(exponent, n);
+                    // x = x.modPow(BigInteger.TWO, n); // Q.A2 x^2 (mod n) instead of above.
+
+                    // System.out.println("x = a^(2^" + j + " * s) mod n = " + x);
+
+                    if (x.equals(BigInteger.ONE)) {
+                        //System.out.println("composite number detected with this a");
+                        witnessFound = true;
+                        break;
+                    } else if (x.equals(n.subtract(BigInteger.ONE))) {
+                        //System.out.println("probably prime with this a");
+                        witnessFound = false;
+                        break;
+                    } else {
+                        witnessFound = true;
+                    }
+                }
+
+                if (witnessFound) {
+                    probablyPrime = false;
+                    break; // stop testing more a:s
+                }
+            }
+
+            if (probablyPrime) {
+                // System.out.println("\nResult after 20 tests: " + n + " is ProbablyPrime.");
+                listOfPrimes.add(n);
+                generatedPrimes++;
+                // System.out.println("Generated primes: " + generatedPrimes);
+            }
+        }
+        long end = System.currentTimeMillis();
+        System.out.println("Time for generating 100 primes: " + (end - start) + " ms, with " + bitLength + "bits");
+        return listOfPrimes;
+    }
+}
