@@ -69,33 +69,33 @@ public class RabinMiller {
                     continue;
                 }
 
-                boolean witnessFound = false;
+                boolean foundNMinusOne = false;
 
                 for (int j = 1; j < r; j++) {
-                    BigInteger twoPowJ = BigInteger.TWO.pow(j);
-                    BigInteger exponent = twoPowJ.multiply(s);
-                    x = a.modPow(exponent, n);
-                    // x = x.modPow(BigInteger.TWO, n); // Q.A2 x^2 (mod n) instead of above.
+                    // BigInteger twoPowJ = BigInteger.TWO.pow(j);
+                    // BigInteger exponent = twoPowJ.multiply(s);
+                    // x = a.modPow(exponent, n);
+                    x = x.modPow(BigInteger.TWO, n); // Q.A2 x^2 (mod n) instead of above.
 
                     // System.out.println("x = a^(2^" + j + " * s) mod n = " + x);
 
-                    if (x.equals(BigInteger.ONE)) {
-                        //System.out.println("composite number detected with this a");
-                        witnessFound = true;
+                    if(x.equals(BigInteger.ONE)){
+                        System.out.println("probably prime x = 1");
                         break;
-                    } else if (x.equals(n.subtract(BigInteger.ONE))) {
-                        //System.out.println("probably prime with this a");
-                        witnessFound = false;
+                    }
+
+                    if (x.equals(n.subtract(BigInteger.ONE))) {
+                        // System.out.println("probably prime with this a");
+                        foundNMinusOne = true;
                         break;
-                    } else {
-                        witnessFound = true;
                     }
                 }
+                    
+                    if(!foundNMinusOne){
+                        probablyPrime = false;
+                        break;
+                    }
 
-                if (witnessFound) {
-                    probablyPrime = false;
-                    break; // stop testing more a:s
-                }
             }
 
             if (probablyPrime) {
@@ -106,7 +106,9 @@ public class RabinMiller {
             }
         }
         long end = System.currentTimeMillis();
-        System.out.println("Time for generating 100 primes: " + (end - start) + " ms, with " + bitLength + "bits");
+        System.out.println(
+                "Time for generating " + count + " primes: " + (end - start) + " ms, with " + bitLength + "bits");
+        System.out.println(listOfPrimes);
         return listOfPrimes;
     }
 }
