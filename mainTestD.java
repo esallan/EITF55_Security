@@ -3,7 +3,7 @@ import java.util.Random;
 
 public class mainTestD {
     public static void main(String[] args) {
-        RSA_Program rsa = new RSA_Program();
+        Euklides_Algorithm euA = new Euklides_Algorithm();
         Random rnd = new Random();
 
         //Setup
@@ -13,7 +13,7 @@ public class mainTestD {
         BigInteger q = new BigInteger("8911042822575281754351259360469431162438549749954983001230866538190015228433988510560602922206729672700437787248254257478819576492210753371685859625228919");
         BigInteger N = p.multiply(q);
         BigInteger phi = (p.subtract(BigInteger.ONE)).multiply(q.subtract(BigInteger.ONE));
-        BigInteger d = rsa.inverseMod(e, phi);
+        BigInteger d = euA.inverseMod(e, phi);
 
         //Steg 1:
         BigInteger s;

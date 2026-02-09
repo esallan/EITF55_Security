@@ -1,8 +1,8 @@
 import java.math.BigInteger;
 
-public class RSA_Program {
+public class Euklides_Algorithm {
 
-    public RSA_Program() {
+    public Euklides_Algorithm() {
     }
 
     public BigInteger inverseMod(BigInteger a, BigInteger m) {

@@ -3,7 +3,7 @@ import java.util.Random;
 
 public class mainTestC1 {
     public static void main(String[] args) {
-        RSA_Program rsa = new RSA_Program();
+        Euklides_Algorithm euA = new Euklides_Algorithm();
 
         Random rand = new Random();
 
@@ -13,7 +13,7 @@ public class mainTestC1 {
         System.out.println("m is: " + m);
 
         try {
-            BigInteger inverse = rsa.inverseMod(a, m);
+            BigInteger inverse = euA.inverseMod(a, m);
             System.out.println("Inverse. " + inverse);
             System.out.println("check = " + a.multiply(inverse).mod(m));
 

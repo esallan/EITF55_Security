@@ -2,7 +2,7 @@ import java.math.BigInteger;
 
 public class mainTestC2 {
     public static void main(String[] args) {
-        RSA_Program rsa = new RSA_Program();
+        Euklides_Algorithm euA = new Euklides_Algorithm();
 
         long integerE = (long) Math.pow(2, 16) + 1;
 
@@ -12,7 +12,7 @@ public class mainTestC2 {
         BigInteger phi = (p.subtract(BigInteger.ONE)).multiply(q.subtract(BigInteger.ONE));
 
         try {
-            BigInteger d = rsa.inverseMod(e, phi);
+            BigInteger d = euA.inverseMod(e, phi);
             System.out.println("d = " + d);
             System.out.println("Check: e * d mod phi = " + e.multiply(d).mod(phi));
 
