@@ -10,9 +10,7 @@ public class RSA_Program {
         BigInteger d2 = a;
         BigInteger v1 = BigInteger.ZERO;
         BigInteger v2 = BigInteger.ONE;
-        BigInteger q;
-        BigInteger t1;
-        BigInteger t2;
+        BigInteger q, t1, t2;
 
         while (!d2.equals(BigInteger.ZERO)) {
             q = d1.divide(d2);
@@ -26,15 +24,9 @@ public class RSA_Program {
         if (!d1.equals(BigInteger.ONE)) {
             throw new ArithmeticException("there is no inverse");
         }
+        //reducera v1 med modulo m så vi får mängden 0 < v1 < m
+        BigInteger inverse = inverse = v1.mod(m);
 
-        //reducera v1 med modulo m så vi får [-m, m]
-        BigInteger k = v1.divide(m);
-        BigInteger inverse = v1.subtract(k.multiply(m));
-
-        //om inversen blir negativt lägger vi den i talområdet [0,m]
-        if (inverse.compareTo(BigInteger.ZERO) < 0) {
-            inverse = inverse.add(m);
-        }
         return inverse;
     }
 }
