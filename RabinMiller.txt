@@ -72,10 +72,10 @@ public class RabinMiller {
                 boolean foundNMinusOne = false;
 
                 for (int j = 1; j < r; j++) {
-                    // BigInteger twoPowJ = BigInteger.TWO.pow(j);
-                    // BigInteger exponent = twoPowJ.multiply(s);
-                    // x = a.modPow(exponent, n);
-                    x = x.modPow(BigInteger.TWO, n); // Q.A2 x^2 (mod n) instead of above.
+                    BigInteger twoPowJ = BigInteger.TWO.pow(j);
+                    BigInteger exponent = twoPowJ.multiply(s);
+                    x = a.modPow(exponent, n);
+                    // x = x.modPow(BigInteger.TWO, n); // Q.A2 x^2 (mod n) instead of above.
 
                     // System.out.println("x = a^(2^" + j + " * s) mod n = " + x);
 
@@ -108,7 +108,7 @@ public class RabinMiller {
         long end = System.currentTimeMillis();
         System.out.println(
                 "Time for generating " + count + " primes: " + (end - start) + " ms, with " + bitLength + "bits");
-        // System.out.println(listOfPrimes);
+        //System.out.println(listOfPrimes);
         return listOfPrimes;
     }
 }
